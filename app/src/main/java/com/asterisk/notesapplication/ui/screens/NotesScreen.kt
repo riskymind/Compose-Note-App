@@ -6,17 +6,22 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.tooling.preview.Preview
 import com.asterisk.notesapplication.domain.model.NoteModel
 import com.asterisk.notesapplication.routing.Screen
 import com.asterisk.notesapplication.ui.components.AppDrawer
 import com.asterisk.notesapplication.ui.components.Note
+import com.asterisk.notesapplication.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
-fun NotesScreen() {
+fun NotesScreen(viewModel: MainViewModel) {
+
+    val notes: List<NoteModel> by viewModel.notesNotInTrash.observeAsState(listOf())
 
     val scaffoldState: ScaffoldState = rememberScaffoldState()
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
@@ -46,7 +51,15 @@ fun NotesScreen() {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Note Button")
             }
         },
-        content = {}
+        content = {
+            if (notes.isNotEmpty()) {
+                NoteList(
+                    notes = notes,
+                    onNoteCheckedChange = {},
+                    onNoteClicked = {}
+                )
+            }
+        }
     )
 }
 
@@ -80,10 +93,4 @@ fun NoteListPreview() {
         ),
         onNoteCheckedChange = {},
         onNoteClicked = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NotesScreenPreview() {
-    NotesScreen()
 }
