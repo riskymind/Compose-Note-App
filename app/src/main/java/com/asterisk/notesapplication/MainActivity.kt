@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
     private fun MainActivityScreen(viewModel: MainViewModel) {
         when (NotesRouter.currentScreen) {
             Screen.Notes -> NotesScreen(viewModel)
-            Screen.SaveNote -> SaveNoteScreen()
+            Screen.SaveNote -> SaveNoteScreen(viewModel)
             Screen.Trash -> TrashScreen()
         }
     }
