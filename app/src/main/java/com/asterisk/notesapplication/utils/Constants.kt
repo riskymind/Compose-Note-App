@@ -45,4 +45,8 @@ object Constants {
     val DEFAULT = with(DEFAULT_COLOR) { ColorModel(id, name, hex) }
 
     const val NEW_NOTE_ID = -1L
+
+    const val NO_DIALOG = 1
+    const val RESTORE_NOTES_DIALOG = 2
+    const val PERMANENTLY_DELETE_DIALOG = 3
 }

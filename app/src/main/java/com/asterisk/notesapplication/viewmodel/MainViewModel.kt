@@ -19,8 +19,13 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
         repository.getAllNotesNotInTrash()
     }
 
+    val notesInTrash: LiveData<List<NoteModel>> by lazy { repository.getAllNotesInTrash() }
+
     private var _noteEntry = MutableLiveData(NoteModel())
     val noteEntry: LiveData<NoteModel> = _noteEntry
+
+    private var _selectedNotes = MutableLiveData<List<NoteModel>>(listOf())
+    val selectedNotes: LiveData<List<NoteModel>> = _selectedNotes
 
     val colors: LiveData<List<ColorModel>> by lazy {
         repository.getAllColors()
@@ -41,6 +46,50 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
             withContext(Dispatchers.Main) {
                 NotesRouter.navigateTo(Screen.Notes)
                 _noteEntry.value = NoteModel()
+            }
+        }
+    }
+
+    fun onNoteCheckedChange(note: NoteModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.insertNote(note)
+        }
+    }
+
+    fun onNoteClick(note: NoteModel) {
+        _noteEntry.value = note
+        NotesRouter.navigateTo(Screen.SaveNote)
+    }
+
+    fun moveNoteToTrash(note: NoteModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.moveNoteToTrash(note.id)
+            withContext(Dispatchers.Main) {
+                NotesRouter.navigateTo(Screen.Notes)
+            }
+        }
+    }
+
+    fun onNoteSelected(note: NoteModel) {
+        _selectedNotes.value = _selectedNotes.value!!.toMutableList().apply {
+            if (contains(note)) remove(note) else add(note)
+        }
+    }
+
+    fun restoreNotes(selectedNotes: List<NoteModel>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.restoreNotesFromTrash(selectedNotes.map { it.id })
+            withContext(Dispatchers.Main) {
+                _selectedNotes.value = listOf()
+            }
+        }
+    }
+
+    fun deleteNotesPermanently(selectedNotes: List<NoteModel>) {
+        viewModelScope.launch {
+            repository.deleteNotes(selectedNotes.map { it.id })
+            withContext(Dispatchers.Main) {
+                _selectedNotes.value = listOf()
             }
         }
     }

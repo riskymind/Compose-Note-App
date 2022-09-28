@@ -48,7 +48,7 @@ fun Note(
                         checked = note.isCheckOff,
                         onCheckedChange = { isChecked ->
                             val newNote = note.copy(isCheckOff = isChecked)
-                            onNoteCheckedChange.invoke(note)
+                            onNoteCheckedChange.invoke(newNote)
                         },
                         modifier = Modifier.padding(start = 8.dp),
                     )
