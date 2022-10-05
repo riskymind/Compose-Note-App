@@ -35,7 +35,7 @@ fun NotesApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colors = if (darkTheme) {
+    val colors = if (darkTheme || NotesThemeSettings.isDarkThemeEnabled) {
         DarkColorPalette
     } else {
         LightColorPalette

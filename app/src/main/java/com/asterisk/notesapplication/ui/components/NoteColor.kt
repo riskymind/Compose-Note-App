@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,9 +27,9 @@ fun NoteColor(
 
     Box(modifier = modifier
         .size(size)
-        .clip(CircleShape)
+        .clip(RectangleShape)
         .background(color)
-        .border(BorderStroke(border, SolidColor(Color.Black)), CircleShape)
+        .border(BorderStroke(border, SolidColor(Color.Black)), RectangleShape)
     )
 }
 
