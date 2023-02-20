@@ -1,5 +1,8 @@
 package com.asterisk.notesapplication
 
+import android.app.Activity
+import android.app.ActivityManager
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
